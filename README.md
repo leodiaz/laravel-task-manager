@@ -1,2 +1,3 @@
-# laravel-task-manager
-Task manager built with Laravel
+# Laravel Task Manager
+
+Primer proyecto para portfolio usando Laravel.??
