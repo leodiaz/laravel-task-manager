@@ -19,3 +19,7 @@ Route::get('/create-task', function () {
 
     return "Task creada";
 });
+
+Route::get('/tasks/{id}/complete', [TaskController::class, 'complete']);
+
+Route::get('/tasks/{id}/delete', [TaskController::class, 'destroy']);
