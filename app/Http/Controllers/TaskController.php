@@ -9,19 +9,26 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = Task::orderBy('completed')->get();
 
-        return response()->json($tasks);
+        $pendingTasks = Task::where('completed', false)->count();
+
+        return view('tasks.index', compact('tasks', 'pendingTasks'));
     }
 
     public function store(Request $request)
     {
-        $task = Task::create([
+        $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string'
+        ]);
+
+        Task::create([
             'title' => $request->title,
             'description' => $request->description
         ]);
 
-        return response()->json($task);
+        return redirect('/tasks')->with('success', 'Tarea creada correctamente');
     }
 
     public function complete($id)
@@ -31,7 +38,7 @@ class TaskController extends Controller
         $task->completed = true;
         $task->save();
 
-        return response()->json($task);
+        return redirect('/tasks')->with('success', 'Tarea marcada como completada');
     }
 
     public function destroy($id)
@@ -39,9 +46,6 @@ class TaskController extends Controller
     $task = Task::findOrFail($id);
     $task->delete();
 
-    return response()->json([
-        'message' => 'Task eliminada',
-        'id' => $id
-    ]);
+    return redirect('/tasks')->with('deleted', 'Tarea eliminada');
 }
 }
