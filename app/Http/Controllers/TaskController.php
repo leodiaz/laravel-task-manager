@@ -41,11 +41,32 @@ class TaskController extends Controller
         return redirect('/tasks')->with('success', 'Tarea marcada como completada');
     }
 
-    public function destroy($id)
-{
-    $task = Task::findOrFail($id);
-    $task->delete();
+    public function edit($id)
+    {
+        $task = Task::findOrFail($id);
 
-    return redirect('/tasks')->with('deleted', 'Tarea eliminada');
-}
+        return view('tasks.edit', compact('task'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string'
+            ]);
+
+        $task = Task::findOrFail($id);
+
+        $task->update($request->only(['title','description']));
+
+        return redirect('/tasks')->with('success', 'Tarea actualizada');
+    }
+
+        public function destroy($id)
+    {
+        $task = Task::findOrFail($id);
+        $task->delete();
+
+        return redirect('/tasks')->with('deleted', 'Tarea eliminada');
+    }
 }

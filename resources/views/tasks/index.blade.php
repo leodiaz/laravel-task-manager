@@ -36,7 +36,7 @@
         @endif
         @foreach($tasks as $task)
             <li>
-                <strong>{{ $task->title }}</strong> - {{ $task->description }}
+                <strong>{{ $task->title }}</strong> - {{ $task->description }}  <a href="/tasks/{{ $task->id }}/edit">Editar</a>
                 @if($task->completed)
                     ✅ Completada
                 @else
